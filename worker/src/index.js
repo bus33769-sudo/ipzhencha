@@ -444,6 +444,7 @@ export default {
     if (path === '/' && !wantsText) {
       return new Response('IP侦查 API 已启动。用 /api/check?ip= 查询，或 curl 本地址看简报。', { headers: { 'content-type': 'text/plain; charset=utf-8', ...CORS_HEADERS } });
     }
+    const selfDetect = !url.searchParams.get('ip');
     let ip = url.searchParams.get('ip') || request.headers.get('CF-Connecting-IP') || '';
     if (!isIP(ip)) {
       return new Response(JSON.stringify({ error: 'missing_or_invalid_ip' }), { status: 400, headers: { 'content-type': 'application/json', ...CORS_HEADERS } });
@@ -458,7 +459,7 @@ export default {
     const resp = new Response(body, {
       headers: {
         'content-type': wantsText ? 'text/plain; charset=utf-8' : 'application/json; charset=utf-8',
-        'cache-control': `public, max-age=${CACHE_TTL}`,
+        'cache-control': selfDetect ? 'no-store' : `public, max-age=${CACHE_TTL}`,
         ...CORS_HEADERS,
       },
     });
