@@ -105,6 +105,15 @@ const I18N = {
 
 let lang = localStorage.getItem('ipzhencha-lang')
   || ((navigator.language || 'zh').toLowerCase().startsWith('en') ? 'en' : 'zh');
+const COUNTRY_DISPLAY = {
+  zh: { TW: '中国台湾省', HK: '中国香港', MO: '中国澳门' },
+  en: { TW: 'Taiwan Province, China', HK: 'Hong Kong, China', MO: 'Macao, China' }
+};
+function dispCountry(c) {
+  if (!c) return c;
+  const m = COUNTRY_DISPLAY[String(lang).startsWith('en') ? 'en' : 'zh'];
+  return m[c] || c;
+}
 const t = () => I18N[lang];
 
 function applyI18n() {
@@ -164,7 +173,7 @@ function render(rep) {
   }
   // 骨架版：国家/城市、ASN 从已返回源里取第一个有值的（正式版第 3–4 天做投票汇总）
   const loc = rep.sources.find((s) => s.returned && (s.country || s.city));
-  document.getElementById('r-location').textContent = loc ? [loc.country, loc.city].filter(Boolean).join(' / ') : tt.no_data;
+  document.getElementById('r-location').textContent = loc ? [dispCountry(loc.country), loc.city].filter(Boolean).join(' / ') : tt.no_data;
   const asnSrc = rep.sources.find((s) => s.returned && s.asn);
   document.getElementById('r-asn').textContent = asnSrc ? asnSrc.asn : tt.no_data;
 
@@ -173,7 +182,7 @@ function render(rep) {
   for (const s of rep.sources) {
     const tr = document.createElement('tr');
     if (!s.returned) tr.className = 'missing';
-    const cells = [s.name, s.returned ? tt.yes : tt.no, s.country || '—', s.type || '—', s.note || ''];
+    const cells = [s.name, s.returned ? tt.yes : tt.no, dispCountry(s.country) || '—', s.type || '—', s.note || ''];
     for (const c of cells) { const td = document.createElement('td'); td.textContent = c; tr.appendChild(td); }
     tbody.appendChild(tr);
   }
