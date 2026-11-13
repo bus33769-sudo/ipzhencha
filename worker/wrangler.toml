@@ -1,0 +1,22 @@
+# IP侦查 Worker 配置（占位骨架，未部署）
+# 纪律：这里只写非敏感配置。所有 API Key 一律用 `wrangler secret put <变量名>` 写入 Secrets，
+# 绝不写进本文件、绝不提交真实值。
+name = "ipzhencha-api"
+main = "src/index.js"
+compatibility_date = "2026-11-12"
+
+# workers.dev 免费子域名先行；正式域名 ipzhencha.com 购买与绑定另行决定，V1 不绑。
+workers_dev = true
+
+[vars]
+# 非敏感开关。ip-api 免费版仅限非商业：IPAPI_TEST_ONLY 只允许纯个人测试期设为 "1"，
+# 公开推广前必须移除该适配器（见 src/index.js 的 TEST_ONLY 注释）。
+IPAPI_TEST_ONLY = "0"
+
+# 需要 lucky 本人注册账号后，用 wrangler secret put 逐个写入的 Secrets（只列变量名）：
+#   ABUSEIPDB_API_KEY     — AbuseIPDB
+#   PROXYCHECK_API_KEY    — proxycheck.io
+#   IPAPIIS_API_KEY       — ipapi.is
+#   IP2LOCATION_API_KEY   — IP2Location.io
+# MaxMind GeoLite2 为后置源：下载型离线库无法塞进后台粘贴部署的 Worker，不配 Secret；
+# 待 GitHub Actions 构建离线库后启用（见 README「后置源」与 src/index.js 的 DEFERRED_SOURCES）。

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>公式与说明 · IP侦查 IPZhencha — Formula & About</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">IP侦查 <span class="brand-en">IPZhencha</span></div>
+  <nav><a href="index.html">← 返回检测 / Back</a></nav>
+</header>
+
+<main class="about-body">
+  <h1>评分公式与说明 · Formula &amp; About</h1>
+  <p>本站公式自研并公开，逐项可对账；每次改动只改一项，并用固定测试集复跑对比。Scores use our own published formula; every deduction names its source.（骨架版摘要，正式版上线前补全双语全文。）</p>
+
+  <h2>一、评分公式摘要 / Scoring summary</h2>
+  <p>总分 100：先按类型定上限，再逐项扣分，最后过完整度闸门。</p>
+  <table>
+    <tr><th>类型 Type</th><th>上限 Cap</th></tr>
+    <tr><td>家宽 Residential</td><td>100</td></tr>
+    <tr><td>移动 Mobile</td><td>95</td></tr>
+    <tr><td>教育网 Education</td><td>90</td></tr>
+    <tr><td>企业专线 Business</td><td>85</td></tr>
+    <tr><td>租赁/转手段 Leased / resold segment</td><td>最高 65</td></tr>
+    <tr><td>机房 Datacenter</td><td>55</td></tr>
+    <tr><td>类型未明 Unknown</td><td>最高 70</td></tr>
+  </table>
+  <ul>
+    <li>类型由至少 3 家源投票决定，单源不算数；反向解析为家宽域名格式（如 dynamic-ip.hinet.net）记一票硬证据。Type needs ≥3 source votes; a residential-style PTR counts as one hard-evidence vote.</li>
+    <li>主要扣分：Tor 出口 −40；AbuseIPDB 置信度 ≥50 −10、举报 ≥20 次且最近在 180 天内 −6、只有旧举报 −2 并标「历史记录」；风险库恶意名单 −12 / 仅垃圾名单 −3；DNSBL 每命中 −4（上限 −16）；代理 ≥2 源 −8（1 源只提示）；VPN ≥2 源 −5；同 /24 连坐 ≥8 个 −5、≥3 个 −2；RPKI 无效 −8。</li>
+    <li>完整度闸门：返回源 &lt;7 个不出 A+（上限 84）并标「数据不全」；&lt;4 个不给总分，只给各源原始结果。Fewer than 7 sources: no A+ and flagged incomplete. Fewer than 4: no total score.</li>
+    <li>等级：85+ A+ / 70+ A / 50+ B / 30+ C / 30 以下 D。</li>
+    <li>原生判定：注册国 = 使用国、且无租赁标记，两条同时满足才标原生。登记方、宣告 ASN、运营方对不上的，标「租赁/转手运营段」。</li>
+  </ul>
+
+  <h3>养号适合度 / Suitability for account warming</h3>
+  <p>结论卡上的独立标记，由上面的分数与标记按固定顺序判定（先命中先算），每档都列出理由：结论先行，依据可查。A separate badge on the verdict card, decided in a fixed order from the score and flags above; every tier lists its reasons.</p>
+  <ul>
+    <li><strong>适合养号（绿）</strong>：家宽/移动类型、健康分 ≥70、无任何滥用记录（180 天前的旧举报也不行）、代理标记少于 2 个源、且 ≥7 个源返回，四条全中才给。动态家宽会另附一句提示：IP 可能会变，偶尔触发验证属正常。Residential/mobile type, score ≥70, zero abuse record (old reports included), proxy flags from fewer than 2 sources, and at least 7 sources returned — all required.</li>
+    <li><strong>别碰重要的号（红）</strong>：Tor 出口、命中恶意/失陷名单、AbuseIPDB 置信度 ≥50、近 180 天内举报 ≥20 次、健康分 &lt;50——任一成立即是。Any one of: Tor exit, malicious/compromised listing, abuse confidence ≥50, 20+ reports in 180 days, or score below 50.</li>
+    <li><strong>日常够用（黄）</strong>：其余情况，如干净机房、企业段、租赁家宽、只有历史旧举报的家宽、数据不全的高分 IP，理由逐项写明。Everything else, with the downgrade reasons spelled out.</li>
+    <li><strong>数据不足（灰）</strong>：返回源 &lt;4 个，不给总分，也不给适合度判断。Fewer than 4 sources: no score and no suitability verdict.</li>
+  </ul>
+  <p>适合度只是参考判断：平台还看设备、行为与支付地区，高分不等于一定通过风控。Suitability is a reference judgement only — platforms also weigh device, behaviour and payment region, and a high score never guarantees passing risk checks.</p>
+
+  <h2>二、数据源与署名 / Data sources &amp; attribution（占位）</h2>
+  <ul>
+    <li>IPinfo Lite — CC BY-SA 4.0 署名（正式版补链接）</li>
+    <li>MaxMind GeoLite2 — © MaxMind（署名占位）</li>
+    <li>IP2Location.io — 署名链接占位（其条款要求带署名链接）</li>
+    <li>AbuseIPDB、proxycheck.io、ipapi.is、Scamalytics — 各源名称与链接占位</li>
+    <li>黑名单：Spamhaus（须署名）等公开名单；DShield、StopForumSpam 为非商业许可，商用前替换或取得授权</li>
+    <li>RDAP / 各 RIR whois / RIPEstat — 公开数据</li>
+  </ul>
+  <p>说明：本站只使用与同类站相同的公开上游数据，不抓取任何同类站的页面与数据。We only use public upstream sources; we do not scrape peer sites.</p>
+
+  <h2>三、隐私说明 / Privacy</h2>
+  <ul>
+    <li>不记录访客 IP，不存用户查询的完整 IP。We do not log visitor IPs and do not store full queried IPs.</li>
+    <li>为摊薄数据源额度，同一 IP 的检测结果会用 Cache API 做 15 分钟短期缓存，这是功能需要，不用于追踪个人。Results are cached for 15 minutes for quota reasons only.</li>
+    <li>统计只看查询次数，不看 IP。被查 IP 有异议可走公开纠错（GitHub issue），我们只标注争议，不承诺改别家数据。</li>
+    <li>本说明为本站自述口径，未经第三方独立审计。This statement is our own and has not been independently audited.</li>
+  </ul>
+
+  <h2>四、免责 / Disclaimer</h2>
+  <p>分数是本站公式对公开数据的推算，仅供参考；本站不承诺任何 IP 能通过任何平台的风控、注册或支付审核。Scores are estimates from public data, for reference only.</p>
+</main>
+</body>
+</html>

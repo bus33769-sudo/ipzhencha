@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IP侦查 · IPZhencha — IP 质量检测</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">IP侦查 <span class="brand-en">IPZhencha</span></div>
+  <nav>
+    <a href="about.html" data-i18n="nav_about">公式与说明</a>
+    <button id="lang-zh" class="lang-btn" type="button">中文</button>
+    <button id="lang-en" class="lang-btn" type="button">EN</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 data-i18n="hero_title">这个 IP 干不干净，一页看清</h1>
+    <p class="sub" data-i18n="hero_sub">多家来源并排摆出，分歧和缺失如实标明；分数每一分都写清扣在哪。</p>
+    <p id="own-ip" class="own-ip"><span data-i18n="own_ip_label">你的出口 IP：</span><strong id="own-ip-value">…</strong></p>
+    <form id="query-form">
+      <input id="ip-input" type="text" inputmode="text" autocomplete="off" spellcheck="false"
+             placeholder="输入任意 IPv4 / IPv6，如 1.1.1.1">
+      <button type="submit" data-i18n="btn_check">检测</button>
+    </form>
+    <p id="status" class="status" role="status"></p>
+  </section>
+
+  <section id="report" hidden>
+    <!-- 1. 结论卡 -->
+    <div class="card" id="block-conclusion">
+      <div class="conclusion-head">
+        <h2 id="r-ip">—</h2>
+        <span id="r-badge" class="badge"></span>
+      </div>
+      <div class="conclusion-grid">
+        <div><span class="k" data-i18n="f_type">类型</span><span class="v" id="r-type">—</span></div>
+        <div><span class="k" data-i18n="f_score">健康分</span><span class="v" id="r-score">—</span></div>
+        <div><span class="k" data-i18n="f_location">国家/城市</span><span class="v" id="r-location">—</span></div>
+        <div><span class="k" data-i18n="f_asn">ASN / 运营商</span><span class="v" id="r-asn">—</span></div>
+        <div><span class="k" data-i18n="f_flags">标记</span><span class="v" id="r-flags">—</span></div>
+        <div><span class="k" data-i18n="f_suitability">养号适合度</span><span class="v"><span id="r-suitability" class="suit-badge suit-unknown">—</span></span></div>
+      </div>
+      <ul id="r-suitability-reasons" class="suit-reasons"></ul>
+      <p class="suit-disclaimer" data-i18n="suit_disclaimer">参考判断：平台还看设备、行为与支付地区，高分不等于一定通过风控</p>
+    </div>
+
+    <!-- 2. 多源对照表 -->
+    <div class="card">
+      <h3 data-i18n="block_sources">多源对照</h3>
+      <div class="table-wrap"><table id="sources-table">
+        <thead><tr>
+          <th data-i18n="col_source">来源</th><th data-i18n="col_returned">已返回</th>
+          <th data-i18n="col_country">国家</th><th data-i18n="col_type">类型判定</th><th data-i18n="col_note">备注</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+
+    <!-- 3. 扣分明细 -->
+    <div class="card">
+      <h3 data-i18n="block_deductions">扣分明细</h3>
+      <ul id="deductions-list" class="plain-list"></ul>
+    </div>
+
+    <!-- 4. 黑名单逐项 -->
+    <div class="card">
+      <h3 data-i18n="block_dnsbl">黑名单逐项（DNSBL）</h3>
+      <ul id="dnsbl-list" class="plain-list"></ul>
+    </div>
+
+    <!-- 5. 滥用历史 -->
+    <div class="card">
+      <h3 data-i18n="block_abuse">滥用历史（AbuseIPDB）</h3>
+      <div id="abuse-body">—</div>
+    </div>
+
+    <p class="fineprint" data-i18n="disclaimer">分数为本站公式推算，仅供参考，不承诺能通过任何平台的风控。</p>
+  </section>
+</main>
+
+<footer>
+  <span data-i18n="footer_privacy">本站不记录访客 IP。详见</span> <a href="about.html" data-i18n="nav_about">公式与说明</a>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
